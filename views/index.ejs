@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js">
+    </script>
+    <script>
+        $(document).ready(function(){
+            //alert("jquery staert");
+            //alert($("input[name='radioAnswer_0']").val());
+            //alert($("#testRadioId").val());
+            //alert($("#testButtonId").val());
+            console.log("jquery startup");
+
+            <% for(let i =0;i < returnResult.length; i++){ %>
+            $("input[name='radioAnswer_<%=i%>']").on('change', function(e){
+                var checkedValue = $("input[name='radioAnswer_<%=i%>']:checked").val();
+                if(checkedValue=="true"){
+                    alert("Correct");
+                }else{
+                    alert("Wrong");
+                }
+            });
+            <% } %>
+        });
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<table style=""border="1">
+        <% for(let i =0;i < returnResult.length; i++){ %>
+    <tr>
+        <td><%= returnResult[i].Q %></td>
+        <td>
+            <input type="radio" id="radioAnswer1_<%=i%>" name="radioAnswer_<%=i%>" value="<%= returnResult[i].A[0].C %>"><%= returnResult[i].A[0].A %><br/>
+            <input type="radio" id="radioAnswer2_<%=i%>" name="radioAnswer_<%=i%>" value="<%= returnResult[i].A[1].C %>"><%= returnResult[i].A[1].A %><br/>
+            <input type="radio" id="radioAnswer3_<%=i%>" name="radioAnswer_<%=i%>" value="<%= returnResult[i].A[2].C %>"><%= returnResult[i].A[2].A %><br/>
+            <input type="radio" id="radioAnswer4_<%=i%>" name="radioAnswer_<%=i%>" value="<%= returnResult[i].A[3].C %>"><%= returnResult[i].A[3].A %><br/>
+        </td>
+    </tr>
+        <% } %>
+</table>
+</br>
+</body>
+</html>
