@@ -34,6 +34,7 @@
 <table style=""border="1">
         <% for(let i =0;i < returnResult.length; i++){ %>
     <tr>
+        <td><%= i+1 %></td>
         <td><%= returnResult[i].Q %></td>
         <td>
             <input type="radio" id="radioAnswer1_<%=i%>" name="radioAnswer_<%=i%>" value="<%= returnResult[i].A[0].C %>"><%= returnResult[i].A[0].A %><br/>
