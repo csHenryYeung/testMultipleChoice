@@ -17,9 +17,15 @@
             $("input[name='radioAnswer_<%=i%>']").on('change', function(e){
                 var checkedValue = $("input[name='radioAnswer_<%=i%>']:checked").val();
                 if(checkedValue=="true"){
-                    alert("Correct");
+                    $("#questionColor_<%=i%>").css('color', 'blue');
+                    $("#correct_<%=i%>").show();
+                    $("#wrong_<%=i%>").hide();
+                    //alert("Correct");
                 }else{
-                    alert("Wrong");
+                    $("#questionColor_<%=i%>").css('color', 'red');
+                    $("#correct_<%=i%>").hide();
+                    $("#wrong_<%=i%>").show();
+                    //alert("Wrong");
                 }
             });
             <% } %>
@@ -35,7 +41,11 @@
         <% for(let i =0;i < returnResult.length; i++){ %>
     <tr>
         <td><%= i+1 %></td>
-        <td><%= returnResult[i].Q %></td>
+        <td id="questionColor_<%=i%>"><%= returnResult[i].Q %>
+            <label id="correct_<%=i%>" style="color:blue; display: none;">(Correct Answer)</label>
+            <label id="wrong_<%=i%>" style="color:red;  display: none;">(Wrong Answer-retry please)</label>
+        </td>
+
         <td>
             <input type="radio" id="radioAnswer1_<%=i%>" name="radioAnswer_<%=i%>" value="<%= returnResult[i].A[0].C %>"><%= returnResult[i].A[0].A %><br/>
             <input type="radio" id="radioAnswer2_<%=i%>" name="radioAnswer_<%=i%>" value="<%= returnResult[i].A[1].C %>"><%= returnResult[i].A[1].A %><br/>
