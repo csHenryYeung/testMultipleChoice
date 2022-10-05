@@ -9,9 +9,9 @@ const fs = require('fs');
     ,{"Q":"Q11","A":"A11"}
 ];*/
 //generateQuestionAndAnswer();
-async function generateQuestionAndAnswer() {
+async function generateQuestionAndAnswer(questionList) {
     console.log("check sync generateQuestionAndAnswer1");
-    let questionList = convertQuestionToArray();
+    
     console.log("check sync generateQuestionAndAnswer2");
     //console.log("questionList:"+JSON.stringify(questionList));
     //setTimeout(1000);
@@ -59,11 +59,11 @@ async function generateQuestionAndAnswer() {
     return resultObj;
 }
 
-function convertQuestionToArray() {
+function convertQuestionToArray(questionFileName) {
     let questionList = [];
     var lineIndex = 0;
     var tempStr;
-    const allFileContents = fs.readFileSync('questionAnswer.json', 'utf-8');
+    const allFileContents = fs.readFileSync(questionFileName, 'utf-8');
     allFileContents.split(/\r?\n/).forEach(line => {
         //console.log(`Line from file: ${line}`);
         tempStr = line.split("-");
@@ -95,10 +95,14 @@ function shuffleArray(array) {
 
 module.exports= function(app){
     app.get('/', async function (req, res) {
-        var returnResult = await generateQuestionAndAnswer();
+        var returnResult = await generateQuestionAndAnswer(convertQuestionToArray('questionAnswer.json'));
+        var lesson2Result = await generateQuestionAndAnswer(convertQuestionToArray('lesson2.json'));
+        let finalResult = {"lesson1" : returnResult,
+            "lesson2" : lesson2Result
+        };
         console.log(JSON.stringify(returnResult));
         console.log("~~~~~~");
-        res.render('index.ejs', {returnResult: returnResult});
+        res.render('index.ejs', {returnResult: finalResult});
     });
 
     app.get ("*", function(req,res){
