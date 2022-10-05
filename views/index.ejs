@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+    <link rel="stylesheet" href="index.css">
 
 
 <head>
@@ -13,7 +14,7 @@
             //alert($("#testButtonId").val());
             console.log("jquery startup");
 
-            <% for(let i =0;i < returnResult.length; i++){ %>
+            <% for(let i =0;i < returnResult.lesson1.length; i++){ %>
             $("input[name='radioAnswer_<%=i%>']").on('change', function(e){
                 var checkedValue = $("input[name='radioAnswer_<%=i%>']:checked").val();
                 if(checkedValue=="true"){
@@ -29,6 +30,60 @@
                 }
             });
             <% } %>
+
+            <% for(let i =0;i < returnResult.lesson2.length; i++){ %>
+            $("input[name='l2radioAnswer_<%=i%>']").on('change', function(e){
+                var checkedValue = $("input[name='l2radioAnswer_<%=i%>']:checked").val();
+                if(checkedValue=="true"){
+                    $("#l2questionColor_<%=i%>").css('color', 'blue');
+                    $("#l2correct_<%=i%>").show();
+                    $("#l2wrong_<%=i%>").hide();
+                    //alert("Correct");
+                }else{
+                    $("#l2questionColor_<%=i%>").css('color', 'red');
+                    $("#l2correct_<%=i%>").hide();
+                    $("#l2wrong_<%=i%>").show();
+                    //alert("Wrong");
+                }
+            });
+            <% } %>
+
+
+            jQuery('ul.tabs').each(function(){
+    // For each set of tabs, we want to keep track of
+    // which tab is active and it's associated content
+    var $active, $content, $links = jQuery(this).find('a');
+
+    // If the location.hash matches one of the links, use that as the active tab.
+    // If no match is found, use the first link as the initial active tab.
+    $active = jQuery($links.filter('[href="'+location.hash+'"]')[0] || $links[0]);
+    $active.addClass('active');
+
+    $content = $($active[0].hash);
+
+    // Hide the remaining content
+    $links.not($active).each(function () {
+        jQuery(this.hash).hide();
+    });
+
+    // Bind the click event handler
+    jQuery(this).on('click', 'a', function(e){
+        // Make the old tab inactive.
+        $active.removeClass('active');
+        $content.hide();
+
+        // Update the variables with the new link and content
+        $active = jQuery(this);
+        $content = jQuery(this.hash);
+
+        // Make the tab active.
+        $active.addClass('active');
+        $content.show();
+
+        // Prevent the anchor's default click action
+        e.preventDefault();
+    });
+});
         });
     </script>
     <meta charset="UTF-8">
@@ -37,24 +92,54 @@
     <title>Document</title>
 </head>
 <body>
-<table style=""border="1">
-        <% for(let i =0;i < returnResult.length; i++){ %>
-    <tr>
-        <td><%= i+1 %></td>
-        <td id="questionColor_<%=i%>"><%= returnResult[i].Q %>
-            <label id="correct_<%=i%>" style="color:blue; display: none;">(Correct Answer)</label>
-            <label id="wrong_<%=i%>" style="color:red;  display: none;">(Wrong Answer-retry please)</label>
-        </td>
+    <ul class="tabs">
+        <li><a href="#tab1">1 Lesson</a></li>
+        <li><a href="#tab2">2 Lesson</a></li>
+    </ul>
+    <div id="tab1" class="tab_content">
+                
+        <table style=""border="1">
+            <% for(let i =0;i < returnResult.lesson1.length; i++){ %>
+        <tr>
+            <td><%= i+1 %></td>
+            <td id="questionColor_<%=i%>"><%= returnResult.lesson1[i].Q %>
+                <label id="correct_<%=i%>" style="color:blue; display: none;">(Correct Answer)</label>
+                <label id="wrong_<%=i%>" style="color:red;  display: none;">(Wrong Answer-retry please)</label>
+            </td>
 
-        <td>
-            <input type="radio" id="radioAnswer1_<%=i%>" name="radioAnswer_<%=i%>" value="<%= returnResult[i].A[0].C %>"><%= returnResult[i].A[0].A %><br/>
-            <input type="radio" id="radioAnswer2_<%=i%>" name="radioAnswer_<%=i%>" value="<%= returnResult[i].A[1].C %>"><%= returnResult[i].A[1].A %><br/>
-            <input type="radio" id="radioAnswer3_<%=i%>" name="radioAnswer_<%=i%>" value="<%= returnResult[i].A[2].C %>"><%= returnResult[i].A[2].A %><br/>
-            <input type="radio" id="radioAnswer4_<%=i%>" name="radioAnswer_<%=i%>" value="<%= returnResult[i].A[3].C %>"><%= returnResult[i].A[3].A %><br/>
-        </td>
-    </tr>
-        <% } %>
-</table>
+            <td>
+                <input type="radio" id="radioAnswer1_<%=i%>" name="radioAnswer_<%=i%>" value="<%= returnResult.lesson1[i].A[0].C %>"><%= returnResult.lesson1[i].A[0].A %><br/>
+                <input type="radio" id="radioAnswer2_<%=i%>" name="radioAnswer_<%=i%>" value="<%= returnResult.lesson1[i].A[1].C %>"><%= returnResult.lesson1[i].A[1].A %><br/>
+                <input type="radio" id="radioAnswer3_<%=i%>" name="radioAnswer_<%=i%>" value="<%= returnResult.lesson1[i].A[2].C %>"><%= returnResult.lesson1[i].A[2].A %><br/>
+                <input type="radio" id="radioAnswer4_<%=i%>" name="radioAnswer_<%=i%>" value="<%= returnResult.lesson1[i].A[3].C %>"><%= returnResult.lesson1[i].A[3].A %><br/>
+            </td>
+        </tr>
+            <% } %>
+        </table>
+
+    </div>
+    <div id="tab2" class="tab_content">
+        <table style=""border="1">
+            <% for(let i =0;i < returnResult.lesson2.length; i++){ %>
+        <tr>
+            <td><%= i+1 %></td>
+            <td id="l2questionColor_<%=i%>"><%= returnResult.lesson2[i].Q %>
+                <label id="l2correct_<%=i%>" style="color:blue; display: none;">(Correct Answer)</label>
+                <label id="l2wrong_<%=i%>" style="color:red;  display: none;">(Wrong Answer-retry please)</label>
+            </td>
+
+            <td>
+                <input type="radio" id="l2radioAnswer1_<%=i%>" name="l2radioAnswer_<%=i%>" value="<%= returnResult.lesson2[i].A[0].C %>"><%= returnResult.lesson2[i].A[0].A %><br/>
+                <input type="radio" id="l2radioAnswer2_<%=i%>" name="l2radioAnswer_<%=i%>" value="<%= returnResult.lesson2[i].A[1].C %>"><%= returnResult.lesson2[i].A[1].A %><br/>
+                <input type="radio" id="l2radioAnswer3_<%=i%>" name="l2radioAnswer_<%=i%>" value="<%= returnResult.lesson2[i].A[2].C %>"><%= returnResult.lesson2[i].A[2].A %><br/>
+                <input type="radio" id="l2radioAnswer4_<%=i%>" name="l2radioAnswer_<%=i%>" value="<%= returnResult.lesson2[i].A[3].C %>"><%= returnResult.lesson2[i].A[3].A %><br/>
+            </td>
+        </tr>
+            <% } %>
+        </table>
+    </div>
+
+
 </br>
 </body>
 </html>
